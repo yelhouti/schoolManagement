@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<title>School</title>
+</h:head>
+<h:body>
+<p:growl autoUpdate="true" showDetail="true"/>
+	<h:form>
+	<p:inputText value="#{newUserBean.username}"/><br/>
+	<p:password value="#{newUserBean.password}"/><br/>
+	<p:commandButton value="Ajouter l'utilisateur" action="#{newUserBean.creatUser}">
+		<p:confirm header="Confirmation" message="etes vous sur de vouloir crée un nouvel utilisateur?" icon="ui-icon-alert" />
+	</p:commandButton><br/>
+	<p:confirmDialog global="true">
+        <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+	</h:form>
+</h:body>
+</html>

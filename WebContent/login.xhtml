@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<title>School</title>
+</h:head>
+<h:body>
+<p:growl autoUpdate="true" showDetail="true"/>
+	<h:form>
+	<p:inputText value="#{loginBean.username}"/><br/>
+	<p:password value="#{loginBean.password}"/><br/>
+	<p:commandButton value="se connecter" action="#{loginBean.login}" />
+	<p:outputLabel value="userId: #{sessionBean.userId}"/>
+	</h:form>
+</h:body>
+</html>

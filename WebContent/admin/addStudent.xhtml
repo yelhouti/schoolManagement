@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<title>School</title>
+</h:head>
+<h:body>
+<p:growl autoUpdate="true" showDetail="true"/>
+	<h:form>
+	<p:inputText value="#{newStudentBean.studentId}"/><br/>
+	<p:inputText value="#{newStudentBean.nom}"/><br/>
+	<p:inputText value="#{newStudentBean.prenom}"/><br/>
+	<p:selectOneMenu value="#{newStudentBean.scholarYearId}">
+		<f:selectItems value="#{newStudentBean.scholarYearsList}" var="year" itemLabel="#{year.startyear}-#{year.startyear+1}" itemValue="#{year.id}"/>
+	</p:selectOneMenu><br/>
+	<p:selectOneMenu value="#{newStudentBean.serviceTG}">
+		<f:selectItems value="#{newStudentBean.serviceTGList}" var="stg" itemLabel="#{stg}" itemValue="#{stg.id}"/>
+	</p:selectOneMenu><br/>
+	<p:selectOneMenu value="#{newStudentBean.classeId}">
+		<f:selectItems value="#{newStudentBean.classeList}" var="classe" itemLabel="#{classe.name}" itemValue="#{classe.id}"/>
+	</p:selectOneMenu><br/>
+	<p:commandButton value="ajouter l'élève" action="#{newStudentBean.register}" />
+	</h:form>
+</h:body>
+</html>

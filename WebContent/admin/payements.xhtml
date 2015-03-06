@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<title>Ajouter un élève</title>
+</h:head>
+<h:body>
+<p:growl autoUpdate="true" showDetail="true"/>
+	<h:form>
+	<p:dataTable value="#{payementsBean.payements}" var="payement" editable="true" editMode="cell">
+		<p:column headerText="pour">
+			<p:outputLabel value="#{payement.feeTypeId}"/>
+		</p:column>
+		<p:column headerText="montant">
+			<p:outputLabel value="#{payement.amount}"/>
+		</p:column>
+		<p:column headerText="date">
+			<p:outputLabel value="#{payement.date}"/>
+		</p:column>
+	</p:dataTable>
+	<br/>
+ 	<p:dataTable value="#{payementsBean.}" editable="true" editMode="cell"> 
+		
+ 	</p:dataTable> 
+	</h:form>
+</h:body>
+</html>

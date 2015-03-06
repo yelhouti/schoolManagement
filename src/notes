@@ -1,0 +1,85 @@
+<application>
+         <el-resolver>
+             com.github.werpu.scalaelresolver.ScalaELResolver
+         </el-resolver>
+     </application>
+     
+     
+     
+     
+     
+     
+     
+     
+package beans
+
+import javax.faces.bean.ManagedBean
+import javax.faces.bean.RequestScoped
+import scala.beans.BeanProperty
+import javax.validation.constraints.NotNull
+import entities.Tables._
+import entities.Tables.profile.simple._
+import javax.faces.application.FacesMessage
+import javax.faces.context.FacesContext
+import util.EncryptionHelper
+import util.EncryptionHelper
+import javax.faces.bean.ManagedProperty
+import javax.annotation.PostConstruct
+import org.primefaces.event.CellEditEvent
+
+@RequestScoped
+@ManagedBean
+class PayementsBean {
+
+  @BeanProperty
+  @NotNull(message = "Veillez saisir votre identifiant")
+  var username: String = ""
+
+  @NotNull(message = "Veillez saisir votre mot de passe")
+  @BeanProperty var password: String = ""
+
+  //@ManagedProperty(value="#{SessionBean}")
+  val sessionBean = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("sessionBean").asInstanceOf[SessionBean]
+
+  val url = "jdbc:mysql://localhost:3306/school?user=root&password=toor"
+  val db = Database.forURL(url, driver = "com.mysql.jdbc.Driver")
+
+  var studentId: Int = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("studentId").asInstanceOf[Int]
+  var scholarYearId: Int = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("scholarYearId").asInstanceOf[Int]
+  var classeName: String = "";
+  var payements: List[PayedfeeRow] = List()
+  var feeAmountRowList: List[TableRow] = List(new TableRow())
+
+  val feeTypes: List[FeetypeRow] = db.withTransaction { implicit session => Feetype.list }
+
+  @PostConstruct
+  def updateStudentAndYear = {
+    db.withTransaction { implicit session =>
+      try {
+        if (payements.isEmpty || payements.head.studentId != studentId || payements.head.scholaryearId != scholarYearId) {
+          payements = Payedfee.filter(p => p.studentId === studentId && p.scholaryearId === scholarYearId).list
+          val student: StudentRow = Student.filter(_.id === studentId).first
+          classeName = Classe.filter(_.id === StudentClasse.filter(sc => sc.scholaryearId === scholarYearId && sc.studentId === studentId).first.classeId).first.name
+          feeAmountRowList = List(new TableRow(studentId, student.firstname, student.lastname, classeName , payementsToFeeTypeAmountList(payements) ))
+        }
+      } catch {
+        case t: NoSuchElementException =>//TODO add message no such student t.printStackTrace() 
+      }
+
+    }
+  }
+
+  def payementsToFeeTypeAmountList(payementsList: List[PayedfeeRow]): List[Int] = payementsList.groupBy(_.feetypeId).toList.map(x => (x._2.map(_.amount).reduce(_ + _)))
+
+  def addPayement(event: CellEditEvent) = {
+    println(event.getSource())
+    //    db.withTransaction { implicit session =>
+    //        event.getSource()
+    //        
+    //    }
+  }
+
+  class TableRow(id: Int, firstName: String, lastName: String, classeName: String , fees: List[Int] ) {
+    def this() { this(0, "", "", "" ,List[Int]() ) }
+  }
+}
